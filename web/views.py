@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 import requests
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -75,7 +76,10 @@ def record_reminder(request):
         entry = Message(user=user, title=title, status=status,url=url)
         entry.save()
 
-        return HttpResponseRedirect(reverse("index"))
+    data = {}
+    data['result'] = 'added new reminder'
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 #receives Ajax request to change reminder status
 def change_status(request):
@@ -95,4 +99,6 @@ def change_status(request):
         message.status = status
         message.save()
 
-        return HttpResponseRedirect(reverse("index"))
+    data = {}
+    data['result'] = 'updated status'
+    return HttpResponse(json.dumps(data), content_type="application/json")

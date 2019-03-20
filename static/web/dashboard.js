@@ -53,14 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
             new_status = "Active"
         };
 
-
-
-        //make ajax post request
+        //make ajax post request, reload page when received confirmation
         $.ajax({
             type: "POST",
             url: "/change_status",
             dataType: "json",
             data: {"status": new_status, "id": id},
+            success: function(data) {
+                console.log(data.result);
+                location.reload();
+            }
         });
-        location.reload();
+
     }

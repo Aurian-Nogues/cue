@@ -46,13 +46,17 @@ function create_reminder(){
     title = $('#title').val();
     status = $('#status').val();
     
-    //make ajax post request
+    //make ajax post request, reload home page when received confirmation
     $.ajax({
         type: "POST",
         url: "/record_reminder",
         dataType: "json",
-        data: {"title": title, "status": status},       
+        data: {"title": title, "status": status},  
+        success: function(data) {
+            console.log(data.result);
+            window.location.pathname = '';
+        }
     });
 
-    window.location.pathname = '';
+    
 };
