@@ -45,3 +45,14 @@ def logout_view(request):
 
 def create_post(request):
     return render(request, "web/create_post.html")
+
+def record_reminder(request):
+    #if user is not conntected send to login page
+    if not request.user.is_authenticated:
+        return render(request, "web/login.html", {"message": None})
+
+    #if request is not a POST, send back to selecting a stock
+    if request.method == 'GET':
+        return HttpResponseRedirect(reverse("index"))
+
+
