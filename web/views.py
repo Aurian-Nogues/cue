@@ -72,9 +72,27 @@ def record_reminder(request):
         status = request.POST.get('status')
         url = "test_url"
 
-        print("ajax received" + " " + str(user) + " " + str(title) + " " + str(status) + " " + str(url))
-
         entry = Message(user=user, title=title, status=status,url=url)
         entry.save()
+
+        return HttpResponseRedirect(reverse("index"))
+
+#receives Ajax request to change reminder status
+def change_status(request):
+    #if user is not conntected send to login page
+    if not request.user.is_authenticated:
+        return render(request, "web/login.html", {"message": None})
+
+    #if request is not a POST, send back to selecting a stock
+    if request.method == 'GET':
+        return HttpResponseRedirect(reverse("index"))
+
+    if request.is_ajax() and request.POST:
+        id = request.POST.get('id')
+        status = request.POST.get('status')
+
+        message = reminders = Message.objects.all().get(id=id)
+        message.status = status
+        message.save()
 
         return HttpResponseRedirect(reverse("index"))

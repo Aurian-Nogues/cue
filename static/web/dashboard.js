@@ -40,6 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
     /////////////////////////////////////////////////////////////////
     });
 
+
+    //changes status of reminder
     function change_status(){
-        alert("here");
+        //get current post status and ID, set variable with opposit status
+        status = $(this).text();
+        id = $(this).val();
+
+        if (status == "Active") {
+            new_status = "Disabled"
+        } else {
+            new_status = "Active"
+        };
+
+
+
+        //make ajax post request
+        $.ajax({
+            type: "POST",
+            url: "/change_status",
+            dataType: "json",
+            data: {"status": new_status, "id": id},
+        });
+        location.reload();
     }

@@ -8,4 +8,4 @@ class Message(models.Model):
     status = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.user} / {self.title} / {self.status}"
+        return f"{self.id} / {self.user} / {self.title} / {self.status}"
