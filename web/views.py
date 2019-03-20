@@ -15,7 +15,16 @@ def index(request):
         print("here")
         return render(request, "web/login.html", {"message": None})
 
-    return render(request, "web/index.html")
+        #load  user specific reminders
+
+    user = request.user
+    reminders = Message.objects.all().filter(user=user)
+    
+    context = {
+        "reminders":reminders,
+    }
+
+    return render(request, "web/index.html", context)
 
 def login_view(request):
     username = request.POST["username"]
@@ -24,9 +33,8 @@ def login_view(request):
     if user is not None:
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
-    else:
+    else:       
         return render(request, "web/login.html", {"message": "Invalid credentials."})
-
 
 def createAccount(request):
     if request.method == 'POST':
@@ -47,6 +55,8 @@ def logout_view(request):
 def create_post(request):
     return render(request, "web/create_post.html")
 
+
+#receives Ajax requests when new entry is created and writes them in database
 def record_reminder(request):
     #if user is not conntected send to login page
     if not request.user.is_authenticated:
