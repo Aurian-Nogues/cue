@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
+from .models import Message
 
 
 def index(request):
@@ -55,4 +56,15 @@ def record_reminder(request):
     if request.method == 'GET':
         return HttpResponseRedirect(reverse("index"))
 
+    if request.is_ajax() and request.POST:
+        user = request.user
+        title = request.POST.get('title')
+        status = request.POST.get('status')
+        url = "test_url"
 
+        print("ajax received" + " " + str(user) + " " + str(title) + " " + str(status) + " " + str(url))
+
+        entry = Message(user=user, title=title, status=status,url=url)
+        entry.save()
+
+        return HttpResponseRedirect(reverse("index"))

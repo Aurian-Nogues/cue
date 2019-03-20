@@ -45,7 +45,14 @@ function create_reminder(){
     //get variables to pass
     title = $('#title').val();
     status = $('#status').val();
-    alert(status);
+    
+    //make ajax post request
+    $.ajax({
+        type: "POST",
+        url: "/record_reminder",
+        dataType: "json",
+        data: {"title": title, "status": status},       
+    });
 
-
+    window.location.pathname = '';
 };
