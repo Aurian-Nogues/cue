@@ -95,10 +95,28 @@ def change_status(request):
         id = request.POST.get('id')
         status = request.POST.get('status')
 
-        message = reminders = Message.objects.all().get(id=id)
+        message = Message.objects.all().get(id=id)
         message.status = status
         message.save()
 
     data = {}
     data['result'] = 'updated status'
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+def delete_reminder(request):
+    #if user is not conntected send to login page
+    if not request.user.is_authenticated:
+        return render(request, "web/login.html", {"message": None})
+
+    #if request is not a POST, send back to selecting a stock
+    if request.method == 'GET':
+        return HttpResponseRedirect(reverse("index"))
+
+    if request.is_ajax() and request.POST:
+        id = request.POST.get('id')
+        entry = Message.objects.all().get(id=id)
+        entry.delete()
+
+    data = {}
+    data['result'] = 'deleted reminder'
     return HttpResponse(json.dumps(data), content_type="application/json")

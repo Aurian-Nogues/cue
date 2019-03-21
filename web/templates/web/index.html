@@ -36,7 +36,7 @@
                                 <td><button type="button" value="{{reminder.id}}" class="btn btn-warning status-button">{{reminder.status}}</button></td>
                             {% endif %}
 
-                        <td><a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+                        <td><button type="button" value="{{reminder.id}}" id="delete-reminder"  class="btn btn-danger">Delete</button></td>
                         </tr>
                      {% endfor %}
                     
